@@ -37,5 +37,4 @@ artist_country_count = artist_country.reduceByKey(lambda x, y: x+y)
 sort_by_count = artist_country_count.sortBy(lambda row: row[0]).sortBy(lambda row: -row[1])
 print(sort_by_count.collect())
 
-result = sort_by_count.map(lambda row: f'{row[0]}\t{row[1]}')
-result.coalesce(1, True).saveAsTextFile('./results/3.tsv')
+sort_by_count.map(lambda x: '\t'.join([str(word) for word in x])).coalesce(1).saveAsTextFile('results/result_2.tsv')
