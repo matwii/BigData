@@ -38,3 +38,6 @@ sort_by_count = artist_country_count.sortBy(lambda row: row[0]).sortBy(lambda ro
 print(sort_by_count.collect())
 
 sort_by_count.map(lambda x: '\t'.join([str(word) for word in x])).coalesce(1).saveAsTextFile('results/result_2.tsv')
+
+
+
