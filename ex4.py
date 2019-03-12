@@ -16,5 +16,5 @@ result = albums_artist_count.sortBy(lambda row: -row[0]).sortBy(lambda row: -row
 
 print(result.collect())
 
-result.map(lambda x: '\t'.join([str(word) for word in x])).coalesce(1).saveAsTextFile('results/result_3.tsv')
+result.map(lambda x: '\t'.join([str(word) for word in x])).coalesce(1).saveAsTextFile('results/result_4.tsv')
 
