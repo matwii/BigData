@@ -25,6 +25,7 @@ def task3(artists):
     artist_country = artists.map(lambda line: (line.split(',')[5], 1))
     artist_country_count = artist_country.reduceByKey(lambda x, y: x + y)
     sort_by_count = artist_country_count.sortBy(lambda row: row[0]).sortBy(lambda row: -row[1])
+    print(sort_by_count.collect())
     sort_by_count.map(lambda x: '\t'.join([str(word) for word in x])).coalesce(1) \
         .saveAsTextFile('results/result_3.tsv')
 
@@ -40,6 +41,8 @@ def task5(albums):
     genres = albums.map(lambda line: (line.split(',')[3], int(line.split(',')[6])))
     result = genres.reduceByKey(lambda x, y: x + y).sortBy(lambda row: row[0]) \
         .sortBy(lambda row: -row[1])
+
+    print(result.collect())
 
     result.map(lambda x: '\t'.join([str(word) for word in x]))\
         .coalesce(1).saveAsTextFile('results/result_5.tsv')
@@ -57,6 +60,9 @@ def task6(albums):
     rdd = albums.map(parseLine)
     average_score_album = rdd.map(lambda x: (int(x[0]), (x[1] + x[2] + x[3]) / 3))
     top_ten_albums = average_score_album.top(10, lambda x: x[1])
+
+    print(top_ten_albums)
+
     sc.parallelize(top_ten_albums).map(lambda x: '\t'.join([str(word) for word in x])) \
         .coalesce(1).saveAsTextFile('results/result_6.tsv')
 
@@ -80,6 +86,8 @@ def task7(albums, artists):
     join = top_ten_albums.join(rdd_artists)
     result = join.map(lambda x: (x[1][0][0], x[1][0][1], x[1][1]))
 
+    print(result.collect())
+
     result.map(lambda x: '\t'.join([str(word) for word in x])) \
         .coalesce(1).saveAsTextFile('results/result_7.tsv')
 
@@ -92,6 +100,8 @@ def task8(albums, artists):
         lambda x: x).distinct().collect())
 
     filtered_artists = list(filter(None, filtered_artists))
+
+    print(filtered_artists)
 
     sc.parallelize(filtered_artists).map(lambda x: ''.join([str(word) for word in x])) \
         .saveAsTextFile('results/result_8.tsv')
@@ -110,18 +120,21 @@ def task9(albums, artists):
     average_by_score = nor_albums_by_score.mapValues(lambda x: (x[0][0], (x[0][1] / x[1])))
     result = average_by_score.map(lambda x: (x[1][0], x[1][1], 'Norway')).sortBy(lambda x: x[0]).sortBy(lambda x: -x[1])
 
+    print(result.collect())
     result.map(lambda x: '\t'.join([str(word) for word in x])) \
         .coalesce(1).saveAsTextFile('results/result_9.tsv')
 
 
-#task1(albums)
-#task2(artists)
-#task3(artists)
-#task4(albums)
-#task5(albums)
-#task6(albums)
-#task7(albums, artists)
-#task8(albums, artists)
+task1(albums)
+task2(artists)
+task3(artists)
+task4(albums)
+task5(albums)
+task6(albums)
+task7(albums, artists)
+task8(albums, artists)
+task9(albums, artists)
+
 
 
 

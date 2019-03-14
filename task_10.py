@@ -8,11 +8,11 @@ spark = SparkSession(sc).builder.getOrCreate()
 albums_file = sc.textFile("./albums.csv")
 artists_file = sc.textFile("./artists.csv")
 
-albums = albums_file.map(lambda line: line.split(','))
-albums = albums.map(lambda album: (int(album[0]), int(album[1]), album[3], int(album[4])))
+albums = albums_file.map(lambda album: (int(album.split(',')[0]), int(album.split(',')[1]),
+                                   album.split(',')[3], int(album.split(',')[4])))
 
-artists = artists_file.map(lambda line: line.split(','))
-artists = artists.map(lambda artist: (int(artist[0]), int(artist[4]), artist[5]))
+artists = artists_file.map(lambda artist: (int(artist.split(',')[0]), int(artist.split(',')[4]),
+                                      artist.split(',')[5]))
 
 album_fields = [
     StructField('id', IntegerType(), True),
