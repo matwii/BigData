@@ -22,5 +22,3 @@ result = genres.reduceByKey(lambda x, y: x+y).sortBy(lambda row: row[0])\
     .sortBy(lambda row: -row[1])
 
 result.map(lambda x: '\t'.join([str(word) for word in x])).coalesce(1).saveAsTextFile('results/result_5.tsv')
-
-print(result.collect())
